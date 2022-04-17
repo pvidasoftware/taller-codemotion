@@ -1,0 +1,528 @@
+= Taller Codemotion: Tocando todos los palos
+:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.0
+
+== Presentación
+
+* Jorge Aguilera
+* Programador desde los tiempos de Cobol
+* Backend que toca front
+* No existe eso de fulltsack
+
+== Objetivo
+
+* Desplegar un API Rest en producción
+** Base de datos (PostgreSQL)
+** Accesible Internet
+** Securizada (mediante un token en cabecera)
+
+* Desplegar una app web que lo consuma
+** Cara visible del API
+** Una página simple pero entorno completo
+
+== La verdad
+
+Usar un cluster kubernetes en Okteto de forma fácil
+
+Usar funciones AWS Lambda en Netlify de forma fácil
+
+== Okteto
+
+"Instantly spin up pre-configured environments in the cloud and start developing within seconds"
+
+- kubernetes
+- entornos de desarrollo
+- depuración de aplicaciones k8s
+- stacks ...
+
+== Netlify
+
+"Netlify unites an entire ecosystem of modern tools and services into a single, simple workflow for building high performance sites and apps."
+
+- Static sites
+- AWS Lambda en Javascript y/o Go
+
+
+== Aplicación
+
+Dado un número tan grande como el usuario quiera, la aplicación
+le dirá la cantidad de iteraciones que hay que hacer para validar
+la conjetura de Collatz:
+
+1. si el número es impar, se divide por 3 y se suma 1
+2. si el número es par, se divide por 2
+3. iterar
+4. antes o después llegas a 1
+
+
+== Requisitos
+
+* Nivel principiante tanto back como front
+* Requisitos:
+** Cuenta de Github
+* Entorno de trabajo:
+** Gitpod
+** VSCode
+** Algo de línea de comando
+
+
+[.columns]
+== Tecnología
+
+[.column]
+* Backend
+** **Java**
+** **Micronaut**
+** **Okteto**
+
+[.column]
+* Frontend
+** **Javascript**
+** **NuxtJS (Vue)**
+** **Netlify**
+
+
+== Arquitectura
+
+
+[.stretch]
+[plantuml, target=architecture]
+----
+!include <c4/C4_Context.puml>
+!include <c4/C4_Container.puml>
+!include <office/Users/user.puml>
+!include <office/Users/mobile_user.puml>
+
+title Collatz
+
+LAYOUT_LEFT_RIGHT()
+
+Person(customer, "<$user>")
+
+
+System_Boundary(c0, "Netlify"){
+  Container(front, "Front", "NuxtJS")
+  Container(aws, "Functions", "Lambda")
+}
+
+
+System_Boundary(c1, "Okteto"){
+   
+    Container(api, "Api", "Micronaut")
+
+    ContainerDb(rel_db, "BBDD", "Postgre")
+}
+
+
+Rel_D(customer, front, "HTML")
+Rel_D(front, aws, "Axios")
+Rel_L(aws, api, "Axios")
+Rel_U(api, rel_db, "Store")
+----
+
+
+
+== Backend
+
+1. Fork 
+
+   https://github.com/pvidasoftware/taller-codemotion-backend
+
+
+2. Gitpod
+
+   https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-backend
+
+
+== Entorno
+
+1. sdkman
+   
+   viene instalado en gitpod por defecto
+
+   curl -s "https://get.sdkman.io" | bash
+
+2. java
+
+    viene instalado en gitpod por defecto
+
+    sdk install java DISTRO
+
+
+3. micronaut
+
+    sdk install micronaut
+
+
+== Aplicacion
+
+[source]
+----
+$ mn create-app \
+   --features=postgres \
+   --features=data-jdbc \
+   --features=testcontainers \
+   --features=jib \
+   --test=spock \
+   --jdk 11 \
+   --inplace \
+   collatz
+
+$ ./gradlew build
+----
+
+== Entity 
+
+
+[source]
+----
+@MappedEntity("collatz")
+public class CollatzEntity{
+    @Id
+    @GeneratedValue
+    String id;
+}
+
+----
+
+- añadirle otros atributos
+- añadirle los get/set
+
+
+== Repository
+
+[source]
+----
+
+@JdbcRepository(dialect = Dialect.POSTGRES)
+public abstract class CollatzRepository 
+    implements CrudRepository<CollatzEntity, String>{
+    
+}
+----
+
+
+
+== Service
+
+[source]
+----
+@Singleton
+public class CollatzService {
+
+}
+----
+
+=== Business logic
+
+[source]
+----
+public int calculate(BigInteger n){
+    int count = 0;
+    while (!n.equals(BigInteger.ONE)) {
+        if (n.mod(new BigInteger("2")) == BigInteger.ZERO) {
+            n = n.divide(new BigInteger("2"));
+        } else {
+            n = n.multiply(new BigInteger("3"));
+            n = n.add(new BigInteger("1"));
+        }
+        count++;
+    }
+    return count;
+}
+----
+
+=== Usar persistencia
+
+.inyectar
+[source]
+----
+@Inject CollatzRepository collatzRepository;
+----
+
+.buscar
+[source]
+----
+Optional<CollatzEntity> optional = 
+    collatzRepository.findById( n.toString() );
+----
+
+.guardar
+[source]
+----
+CollatzEntity entity = new CollatzEntity();
+..
+collatzRepository.save(entity);
+----
+
+
+== Controller
+
+[source]
+----
+
+@Controller("/api")
+public class CollatzController{
+    
+}
+----
+
+=== Get/Post
+
+[source]
+----
+
+@Get("/{bi}")
+Map<String,Object> calculate(BigInteger bi){
+    return Map.of("bi", bi, "counter", collatzService.count(bi));
+}
+----
+
+== Test
+
+No nos da tiempo
+
+== Okteto
+
+- https://cloud.okteto.com
+
+- curl https://get.okteto.com -sSfL | sh
+
+- okteto context use https://cloud.okteto.com --token XXXXXXXXXXx
+
+== okteto-stack.yml
+
+[source]
+----
+services:
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=collatz
+    ports:
+      - 5432
+    volumes:
+      - data:/var/lib/postgresql/data/
+----
+
+=== okteto-stack.yml
+
+[source]
+----
+
+  collatz:
+    image: okteto.dev/collatz
+    build:
+      context: build/docker/main
+    ports:
+      - 8080            
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_NAME=collatz
+      - DATABASE_USERNAME=username
+      - DATABASE_PASSWORD=password
+    depends_on:
+      db:
+        condition: service_healthy
+----
+
+=== okteto-stack.yml
+
+[source]
+----
+
+volumes:
+  data:
+
+endpoints:
+  - path: /
+    service: collatz
+    port: 8080
+----
+
+=== deploy
+
+[source]
+----
+$ ./gradle build dockerfile
+$ okteto deploy --build
+----
+
+
+== Front
+
+1. Fork 
+
+   https://github.com/pvidasoftware/taller-codemotion-frontend
+
+
+2. Gitpod
+
+   https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-frontend
+
+
+=== Entorno
+
+1. npm
+
+   viene instalado en gitpod
+
+2. NuxtJS
+
+   yarn create nuxt-app collatz
+
+=== Front
+
+[source]
+----
+- collatz
+- javascript
+- yarn
+- bootstrap vue
+- axios
+- ---
+- **Static** 
+
+$ yarn generate
+----
+
+== Component
+
+.components/Collatz.vue
+[source]
+----
+<template>
+    <div>
+            <h2> Collatz </h2>
+            <form v-on:submit.prevent="submitForm">
+                <div class="form-group">
+                    <label for="bignumber">Big Number</label>
+                    <input type="text" class="form-control" id="bignumber" placeholder="A big number" v-model="form.bignumber">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+                <div class="form-group">
+                    Total iteraciones: {{ counter }}
+                </div>
+            </form>
+    </div>
+</template>
+//continua
+----
+
+=== Component
+
+.components/Collatz.vue
+[source]
+----
+<script>
+export default {
+  name: 'Collatz',
+  data() {
+    return {
+        form:{
+            bignumber: null,
+        },
+        counter: null
+    };
+  },
+//continua
+----
+
+=== Component
+
+.components/Collatz.vue
+[source]
+----
+  methods:{
+      submitForm(){
+          this.$axios.post('/.netlify/functions/api', this.form)
+                 .then((res) => {                     
+                     this.counter = res.data.counter
+                 })
+                 .catch((error) => {
+                     // error.response.status Check status code
+                     console.log(error)
+                 }).finally(() => {
+                     //Perform action in always
+                 });
+        }
+    }
+}
+</script>
+----
+
+== Functions (Netlify)
+
+.functions/api.js
+[source]
+----
+const axios = require('axios');
+const url = 'https://taller-codemotion-backend-XXXXX.cloud.okteto.net/api/'
+
+exports.handler = async (event) => {
+    const request = JSON.parse(event.body)
+    const config = {
+      method: 'get',
+      url: `${url}${request.bignumber}`,      
+    };
+    try {
+        const response = await axios(config)
+        console.log(response.data)
+        return {
+          statusCode: 200,
+          body: JSON.stringify(response.data)
+        }
+      } catch (error) {
+        return {
+          statusCode: 422,
+          body: `Error: ${error}`
+        }
+    }      
+};  
+----
+
+   
+== Netlify
+
+- create account, login github
+
+- install cli
+
+   `npm install netlify-cli -g`
+
+- login
+
+  `netlify login`
+
+=== netlify.toml
+
+[source]
+----
+[build]
+    publish = "dist/"
+
+[functions]
+    directory = "functions/"    
+----
+
+=== deploy
+
+- build
+
+  `yarn generate`
+
+- deploy
+
+   'netlify deploy --prod'
+
+== Auth headers
+
+- validar cabecera en `CollatzController`
+
+- enviar cabecera en `api.json`
+
+
