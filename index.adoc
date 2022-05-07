@@ -163,12 +163,11 @@ Rel_U(api, rel_db, "Store")
 
 == Infra
 
-Desplegar una base de datos en Okteto 
-
-.step1/okteto-stack.yml
 [source]
 ----
 name: collatz
+volumes:
+  data:
 services:
   db:
     image: postgres
@@ -211,11 +210,12 @@ datasources:
     password: password
     schema-generate: CREATE
     dialect: POSTGRES
----
+----
+
 == Build
 
 $ ./gradlew build dockerfile
-----
+
 
 == okteto-stack.yml
 
@@ -241,7 +241,6 @@ $ ./gradlew build dockerfile
 $ okteto deploy --build
 
 == Entrypoint
-
 
 [source]
 ----
