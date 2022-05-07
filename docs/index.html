@@ -495,7 +495,8 @@ Map&lt;String,Object&gt; calculate(BigInteger bi){
 <div class="listingblock"><div class="title">guardar</div><div class="content"><pre class="highlight"><code>CollatzEntity entity = new CollatzEntity();
 ..
 collatzRepository.save(entity);</code></pre></div></div></div></section></section>
-<section><section id="_front"><h2>Front</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Fork</p><div class="literalblock"><div class="content"><pre>https://github.com/pvidasoftware/taller-codemotion-frontend</pre></div></div></li><li><p>Gitpod</p><div class="literalblock"><div class="content"><pre>https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-frontend</pre></div></div></li></ol></div></div></section><section id="_entorno_2"><h2>Entorno</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>npm</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod</pre></div></div></li><li><p>NuxtJS</p><div class="literalblock"><div class="content"><pre>yarn create nuxt-app collatz</pre></div></div></li></ol></div></div></section><section id="_front_2"><h2>Front</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>- collatz
+<section><section id="_front"><h2>Front</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Fork</p><div class="literalblock"><div class="content"><pre>https://github.com/pvidasoftware/taller-codemotion-frontend</pre></div></div></li><li><p>Gitpod</p><div class="literalblock"><div class="content"><pre>https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-frontend</pre></div></div></li></ol></div></div></section><section id="_netlify_2"><h2>Netlify</h2><div class="slide-content"><div class="paragraph"><p><a href="https://netlify.app/" class="bare">https://netlify.app/</a></p></div>
+<div class="ulist"><ul><li><p>create account / login github</p></li><li><p>install cli</p><div class="literalblock"><div class="content"><pre>`npm install netlify-cli -g`</pre></div></div></li><li><p>login</p><div class="literalblock"><div class="content"><pre>`netlify login`</pre></div></div></li></ul></div></div></section><section id="_entorno_2"><h2>Entorno</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>npm</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod</pre></div></div></li><li><p>NuxtJS</p><div class="literalblock"><div class="content"><pre>yarn create nuxt-app collatz</pre></div></div></li></ol></div></div></section><section id="_nuxtjs_collatz"><h2>NuxtJS Collatz</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>- collatz
 - javascript
 - yarn
 - bootstrap vue
@@ -503,7 +504,11 @@ collatzRepository.save(entity);</code></pre></div></div></div></section></sectio
 - ---
 - **Static**
 
-$ yarn generate</code></pre></div></div></div></section><section id="_component"><h2>Component</h2><div class="slide-content"><div class="listingblock"><div class="title">components/Collatz.vue</div><div class="content"><pre class="highlight"><code>&lt;template&gt;
+$ yarn generate</code></pre></div></div></div></section><section id="_netlify_toml"><h2>netlify.toml</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>[build]
+    publish = "dist/"
+
+[functions]
+    directory = "functions/"</code></pre></div></div></div></section><section id="_deploy"><h2>deploy</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section><section id="_component"><h2>Component</h2><div class="slide-content"><div class="listingblock"><div class="title">components/Collatz.vue</div><div class="content"><pre class="highlight"><code>&lt;template&gt;
     &lt;div&gt;
             &lt;h2&gt; Collatz &lt;/h2&gt;
             &lt;form v-on:submit.prevent="submitForm"&gt;
@@ -546,14 +551,16 @@ export default {
         }
     }
 }
-&lt;/script&gt;</code></pre></div></div></div></section><section id="_functions_netlify"><h2>Functions (Netlify)</h2><div class="slide-content"><div class="listingblock"><div class="title">functions/api.js</div><div class="content"><pre class="highlight"><code>const axios = require('axios');
-const url = 'https://taller-codemotion-backend-XXXXX.cloud.okteto.net/api/'
+&lt;/script&gt;</code></pre></div></div></div></section><section id="_index_vue"><h2>Index.vue</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;template&gt;
+  &lt;Collatz /&gt;
+&lt;/template&gt;</code></pre></div></div></div></section><section id="_deploy_2"><h2>deploy 2</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section><section id="_functions_netlify"><h2>Functions (Netlify)</h2><div class="slide-content"><div class="listingblock"><div class="title">functions/api.js</div><div class="content"><pre class="highlight"><code>const axios = require('axios');
+const url = 'https://taller-codemotion-backend-XXXXX.cloud.okteto.net/api'
 
 exports.handler = async (event) =&gt; {
     const request = JSON.parse(event.body)
     const config = {
       method: 'get',
-      url: `${url}${request.bignumber}`,
+      url: `${url}/${request.bignumber}`,
     };
     try {
         const response = await axios(config)
@@ -568,11 +575,7 @@ exports.handler = async (event) =&gt; {
           body: `Error: ${error}`
         }
     }
-};</code></pre></div></div></div></section><section id="_netlify_2"><h2>Netlify</h2><div class="slide-content"><div class="ulist"><ul><li><p>create account, login github</p></li><li><p>install cli</p><div class="literalblock"><div class="content"><pre>`npm install netlify-cli -g`</pre></div></div></li><li><p>login</p><div class="literalblock"><div class="content"><pre>`netlify login`</pre></div></div></li></ul></div></div></section><section id="_netlify_toml"><h2>netlify.toml</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>[build]
-    publish = "dist/"
-
-[functions]
-    directory = "functions/"</code></pre></div></div></div></section><section id="_deploy"><h2>deploy</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section></section>
+};</code></pre></div></div></div></section><section id="_deploy_3"><h2>deploy 3</h2><div class="slide-content"><div class="ulist"><ul><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section></section>
 <section id="_auth_headers"><h2>Auth headers</h2><div class="slide-content"><div class="ulist"><ul><li><p>validar cabecera en <code>CollatzController</code></p></li><li><p>enviar cabecera en <code>api.json</code></p></li></ul></div></div></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.0/js/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
