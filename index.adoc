@@ -197,6 +197,7 @@ $ mn create-app \
    --jdk 11 \
    --inplace \
    collatz
+----
 
 == Ajustar BBDD
 
