@@ -1,0 +1,15 @@
+micronaut:
+  application:
+    name: collatz
+datasources:
+  default:
+    url: jdbc:postgresql://db:5432/collatz
+    driverClassName: org.postgresql.Driver
+    username: username
+    password: password
+    schema-generate: CREATE
+    dialect: POSTGRES
+netty:
+  default:
+    allocator:
+      max-order: 3

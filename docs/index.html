@@ -396,6 +396,7 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );</script></head><
 <section id="_objetivo"><h2>Objetivo</h2><div class="slide-content"><div class="ulist"><ul><li><p>Desplegar un API Rest en producción</p><div class="ulist"><ul><li><p>Base de datos (PostgreSQL)</p></li><li><p>Accesible Internet</p></li><li><p>Securizada (mediante un token en cabecera)</p></li></ul></div></li><li><p>Desplegar una app web que lo consuma</p><div class="ulist"><ul><li><p>Cara visible del API</p></li><li><p>Una página simple pero entorno completo</p></li></ul></div></li></ul></div></div></section>
 <section id="_la_verdad"><h2>La verdad</h2><div class="slide-content"><div class="paragraph"><p>Usar un cluster kubernetes en Okteto de forma fácil</p></div>
 <div class="paragraph"><p>Usar funciones AWS Lambda en Netlify de forma fácil</p></div></div></section>
+<section id="_requisitos"><h2>Requisitos</h2><div class="slide-content"><div class="ulist"><ul><li><p>Nivel principiante tanto back como front</p></li><li><p>Requisitos:</p><div class="ulist"><ul><li><p>Cuenta de Github</p></li></ul></div></li><li><p>Entorno de trabajo:</p><div class="ulist"><ul><li><p>Gitpod</p></li><li><p>VSCode</p></li><li><p>Algo de línea de comando</p></li></ul></div></li></ul></div></div></section>
 <section id="_okteto"><h2>Okteto</h2><div class="slide-content"><div class="paragraph"><p>"Instantly spin up pre-configured environments in the cloud and start developing within seconds"</p></div>
 <div class="ulist"><ul><li><p>kubernetes</p></li><li><p>entornos de desarrollo</p></li><li><p>depuración de aplicaciones k8s</p></li><li><p>stacks &#8230;&#8203;</p></li></ul></div></div></section>
 <section id="_netlify"><h2>Netlify</h2><div class="slide-content"><div class="paragraph"><p>"Netlify unites an entire ecosystem of modern tools and services into a single, simple workflow for building high performance sites and apps."</p></div>
@@ -404,13 +405,17 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );</script></head><
 le dirá la cantidad de iteraciones que hay que hacer para validar
 la conjetura de Collatz:</p></div>
 <div class="olist arabic"><ol class="arabic"><li><p>si el número es impar, se divide por 3 y se suma 1</p></li><li><p>si el número es par, se divide por 2</p></li><li><p>iterar</p></li><li><p>antes o después llegas a 1</p></li></ol></div></div></section>
-<section id="_requisitos"><h2>Requisitos</h2><div class="slide-content"><div class="ulist"><ul><li><p>Nivel principiante tanto back como front</p></li><li><p>Requisitos:</p><div class="ulist"><ul><li><p>Cuenta de Github</p></li></ul></div></li><li><p>Entorno de trabajo:</p><div class="ulist"><ul><li><p>Gitpod</p></li><li><p>VSCode</p></li><li><p>Algo de línea de comando</p></li></ul></div></li></ul></div></div></section>
+<section id="_arquitectura"><h2>Arquitectura</h2><div class="slide-content"><div class="imageblock stretch"><img src="architecture.png" alt="architecture" height="100%"></div></div></section>
 <section id="_tecnología" class="columns"><h2>Tecnología</h2><div class="slide-content"><div class="ulist column"><ul><li><p>Backend</p><div class="ulist"><ul><li><p><strong>Java</strong></p></li><li><p><strong>Micronaut</strong></p></li><li><p><strong>Okteto</strong></p></li></ul></div></li></ul></div>
 <div class="ulist column"><ul><li><p>Frontend</p><div class="ulist"><ul><li><p><strong>Javascript</strong></p></li><li><p><strong>NuxtJS (Vue)</strong></p></li><li><p><strong>Netlify</strong></p></li></ul></div></li></ul></div></div></section>
-<section id="_arquitectura"><h2>Arquitectura</h2><div class="slide-content"><div class="imageblock stretch"><img src="architecture.png" alt="architecture" height="100%"></div></div></section>
-<section><section id="_backend"><h2>Backend</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Fork</p><div class="literalblock"><div class="content"><pre>https://github.com/pvidasoftware/taller-codemotion-backend</pre></div></div></li><li><p>Gitpod</p><div class="literalblock"><div class="content"><pre>https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-backend</pre></div></div></li></ol></div></div></section><section id="_entorno"><h2>Entorno</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>sdkman</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod por defecto</pre></div></div>
+<section id="_check_point"><h2>Check Point</h2><div class="slide-content"><div class="ulist"><ul><li><p>preguntas ?</p></li></ul></div></div></section>
+<section id="_empezamos"><h2>Empezamos</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Fork</p><div class="literalblock"><div class="content"><pre>https://github.com/pvidasoftware/taller-codemotion</pre></div></div></li><li><p>Gitpod</p><div class="literalblock"><div class="content"><pre>https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion</pre></div></div></li></ol></div>
+<div class="paragraph"><p><a href="https://gitpod.io" class="bare">https://gitpod.io</a> ENTRE MEDIAS EL CARACTER # y luego la url de tu repo</p></div></div></section>
+<section><section id="_backend"><h2>Backend</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>sdkman</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod por defecto</pre></div></div>
 <div class="literalblock"><div class="content"><pre>curl -s "https://get.sdkman.io" | bash</pre></div></div></li><li><p>java</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod por defecto</pre></div></div>
-<div class="literalblock"><div class="content"><pre>sdk install java DISTRO</pre></div></div></li><li><p>micronaut</p><div class="literalblock"><div class="content"><pre>sdk install micronaut</pre></div></div></li></ol></div></div></section><section id="_okteto_2"><h2>Okteto</h2><div class="slide-content"><div class="ulist"><ul><li><p><a href="https://cloud.okteto.com" class="bare">https://cloud.okteto.com</a></p></li><li><p>curl <a href="https://get.okteto.com" class="bare">https://get.okteto.com</a> -sSfL | sh</p></li><li><p>okteto context use <a href="https://cloud.okteto.com" class="bare">https://cloud.okteto.com</a> --token XXXXXXXXXXx</p></li></ul></div></div></section><section id="_infra"><h2>Infra</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>name: collatz
+<div class="literalblock"><div class="content"><pre>sdk install java DISTRO</pre></div></div></li><li><p>micronaut</p><div class="literalblock"><div class="content"><pre>sdk install micronaut</pre></div></div></li></ol></div></div></section><section id="_okteto_2"><h2>Okteto</h2><div class="slide-content"><div class="ulist"><ul><li><p><a href="https://cloud.okteto.com" class="bare">https://cloud.okteto.com</a></p></li></ul></div>
+<div class="paragraph"><p>ya tenemos un cluster listo para nosotros</p></div>
+<div class="ulist"><ul><li><p>crear un token (no compartir ni versionar)</p></li></ul></div></div></section><section id="_okteto_cli"><h2>Okteto cli</h2><div class="slide-content"><div class="ulist"><ul><li><p>curl <a href="https://get.okteto.com" class="bare">https://get.okteto.com</a> -sSfL | sh</p></li><li><p>okteto context use <a href="https://cloud.okteto.com" class="bare">https://cloud.okteto.com</a> --token XXXXXXXXXXx</p></li></ul></div></div></section><section id="_desplegando_infra"><h2>Desplegando Infra</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>name: collatz
 volumes:
   data:
 services:
@@ -424,7 +429,7 @@ services:
       - 5432
     volumes:
       - data:/var/lib/postgresql/data/</code></pre></div></div>
-<div class="paragraph"><p>$ okteto deploy</p></div></div></section><section id="_aplicacion"><h2>Aplicacion</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>$ mn create-app \
+<div class="paragraph"><p>$ okteto deploy</p></div></div></section><section id="_empezamos_la_aplicacion"><h2>Empezamos la Aplicacion</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>$ mn create-app \
    --features=postgres \
    --features=data-jdbc \
    --features=testcontainers \
@@ -439,8 +444,8 @@ services:
     username: username
     password: password
     schema-generate: CREATE
-    dialect: POSTGRES</code></pre></div></div></div></section><section id="_build"><h2>Build</h2><div class="slide-content"><div class="paragraph"><p>$ ./gradlew build dockerfile</p></div></div></section><section id="_okteto_stack_yml"><h2>okteto-stack.yml</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>  OJO en services !!!
-  collatz:
+    dialect: POSTGRES</code></pre></div></div></div></section><section id="_build"><h2>Build</h2><div class="slide-content"><div class="paragraph"><p>$ ./gradlew build dockerfile</p></div></div></section><section id="_okteto_stack_yml"><h2>okteto-stack.yml</h2><div class="slide-content"><div class="paragraph"><p><strong>OJO al tabulado, es en services !!!</strong></p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>  collatz:
     image: okteto.dev/collatz
     build:
       context: build/docker/main
@@ -453,11 +458,12 @@ services:
       - DATABASE_PASSWORD=password
     depends_on:
       db:
-        condition: service_healthy</code></pre></div></div></div></section><section id="_entrypoint"><h2>Entrypoint</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>endpoints:
+        condition: service_healthy</code></pre></div></div></div></section><section id="_entrypoint"><h2>Entrypoint</h2><div class="slide-content"><div class="paragraph"><p><strong>OJO NO es en services !!!</strong></p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>endpoints:
   - path: /
     service: collatz
     port: 8080</code></pre></div></div>
-<div class="paragraph"><p>$ okteto deploy --build</p></div></div></section><section id="_estamos_en_internet"><h2>Estamos en Internet</h2><div class="slide-content"><div class="paragraph"><p>abrir navegador</p></div></div></section><section id="_entity"><h2>Entity</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>@MappedEntity("collatz")
+<div class="paragraph"><p>$ okteto deploy --build</p></div></div></section><section id="_estamos_en_internet"><h2>Estamos en Internet</h2><div class="slide-content"><div class="paragraph"><p>abrir navegador</p></div></div></section><section id="_check_point_2"><h2>Check Point</h2><div class="slide-content"><div class="paragraph"><p>cómo vamos ?</p></div></div></section><section id="_entity"><h2>Entity</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>@MappedEntity("collatz")
 public class CollatzEntity{
     @Id
     @GeneratedValue
@@ -486,21 +492,27 @@ public class CollatzService {
 }</code></pre></div></div></div></section><section id="_controller"><h2>Controller</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>@Controller("/api")
 public class CollatzController{
 
-@Get("/{bi}")
-Map&lt;String,Object&gt; calculate(BigInteger bi){
+  @Inject CollatzService collatzService;
+
+  @Get("/{bi}")
+  Map&lt;String,Object&gt; calculate(BigInteger bi){
+    System.out.println(bi.toString());
     return Map.of("bi", bi, "counter", collatzService.count(bi));
-}</code></pre></div></div></div></section><section id="_usar_persistencia"><h2>Usar persistencia</h2><div class="slide-content"><div class="listingblock"><div class="title">inyectar</div><div class="content"><pre class="highlight"><code>@Inject CollatzRepository collatzRepository;</code></pre></div></div>
+  }
+}</code></pre></div></div></div></section><section id="_deploy"><h2>Deploy</h2><div class="slide-content"><div class="paragraph"><p>$ ./gradlew build dockerfile</p></div>
+<div class="paragraph"><p>$ okteto deploy --build</p></div></div></section><section id="_check_point_3"><h2>Check Point</h2><div class="slide-content"><div class="paragraph"><p>Probemos la aplicacion con un navegador</p></div></div></section><section id="_usar_persistencia"><h2>Usar persistencia</h2><div class="slide-content"><div class="listingblock"><div class="title">inyectar</div><div class="content"><pre class="highlight"><code>@Inject CollatzRepository collatzRepository;</code></pre></div></div>
 <div class="listingblock"><div class="title">buscar</div><div class="content"><pre class="highlight"><code>Optional&lt;CollatzEntity&gt; optional =
     collatzRepository.findById( n );</code></pre></div></div>
 <div class="listingblock"><div class="title">guardar</div><div class="content"><pre class="highlight"><code>CollatzEntity entity = new CollatzEntity();
 ..
-collatzRepository.save(entity);</code></pre></div></div></div></section></section>
-<section><section id="_front"><h2>Front</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Fork</p><div class="literalblock"><div class="content"><pre>https://github.com/pvidasoftware/taller-codemotion-frontend</pre></div></div></li><li><p>Gitpod</p><div class="literalblock"><div class="content"><pre>https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-frontend</pre></div></div></li></ol></div></div></section><section id="_netlify_2"><h2>Netlify</h2><div class="slide-content"><div class="paragraph"><p><a href="https://netlify.app/" class="bare">https://netlify.app/</a></p></div>
-<div class="ulist"><ul><li><p>create account / login github</p></li><li><p>install cli</p><div class="literalblock"><div class="content"><pre>`npm install netlify-cli -g`</pre></div></div></li><li><p>login</p><div class="literalblock"><div class="content"><pre>`netlify login`</pre></div></div></li></ul></div></div></section><section id="_entorno_2"><h2>Entorno</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>npm</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod</pre></div></div></li><li><p>NuxtJS</p><div class="literalblock"><div class="content"><pre>yarn create nuxt-app collatz</pre></div></div></li></ol></div></div></section><section id="_nuxtjs_collatz"><h2>NuxtJS Collatz</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>- collatz
+collatzRepository.save(entity);</code></pre></div></div></div></section><section id="_deploy_2"><h2>Deploy</h2><div class="slide-content"><div class="paragraph"><p>$ ./gradlew build dockerfile</p></div>
+<div class="paragraph"><p>$ okteto deploy --build</p></div></div></section><section id="_check_point_4"><h2>Check Point</h2><div class="slide-content"><div class="paragraph"><p>cómo vamos ?</p></div></div></section></section>
+<section><section id="_front"><h2>Front</h2><div class="slide-content"><div class="paragraph"><p>Cambiamos de tercio</p></div></div></section><section id="_netlify_2"><h2>Netlify</h2><div class="slide-content"><div class="paragraph"><p><a href="https://netlify.app/" class="bare">https://netlify.app/</a></p></div>
+<div class="ulist"><ul><li><p>create account / login github</p></li><li><p>install cli</p><div class="literalblock"><div class="content"><pre>`npm install netlify-cli -g`</pre></div></div></li><li><p>login</p><div class="literalblock"><div class="content"><pre>`netlify login` //Ojo a la ventana emergente</pre></div></div></li></ul></div></div></section><section id="_entorno"><h2>Entorno</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>npm</p><div class="literalblock"><div class="content"><pre>viene instalado en gitpod</pre></div></div></li><li><p>NuxtJS</p><div class="literalblock"><div class="content"><pre>yarn create nuxt-app collatz</pre></div></div></li></ol></div></div></section><section id="_nuxtjs_collatz"><h2>NuxtJS Collatz</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>- collatz
 - javascript
 - yarn
 - bootstrap vue
-- axios
+- **axios**
 - ---
 - **Static**
 
@@ -508,7 +520,7 @@ $ yarn generate</code></pre></div></div></div></section><section id="_netlify_to
     publish = "dist/"
 
 [functions]
-    directory = "functions/"</code></pre></div></div></div></section><section id="_deploy"><h2>deploy</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section><section id="_component"><h2>Component</h2><div class="slide-content"><div class="listingblock"><div class="title">components/Collatz.vue</div><div class="content"><pre class="highlight"><code>&lt;template&gt;
+    directory = "functions/"</code></pre></div></div></div></section><section id="_deploy_3"><h2>deploy</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section><section id="_component"><h2>Component</h2><div class="slide-content"><div class="listingblock"><div class="title">components/Collatz.vue</div><div class="content"><pre class="highlight"><code>&lt;template&gt;
     &lt;div&gt;
             &lt;h2&gt; Collatz &lt;/h2&gt;
             &lt;form v-on:submit.prevent="submitForm"&gt;
@@ -553,7 +565,7 @@ export default {
 }
 &lt;/script&gt;</code></pre></div></div></div></section><section id="_index_vue"><h2>Index.vue</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;template&gt;
   &lt;Collatz /&gt;
-&lt;/template&gt;</code></pre></div></div></div></section><section id="_deploy_2"><h2>deploy 2</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section><section id="_functions_netlify"><h2>Functions (Netlify)</h2><div class="slide-content"><div class="listingblock"><div class="title">functions/api.js</div><div class="content"><pre class="highlight"><code>const axios = require('axios');
+&lt;/template&gt;</code></pre></div></div></div></section><section id="_deploy_2_2"><h2>deploy 2</h2><div class="slide-content"><div class="ulist"><ul><li><p>build</p><div class="literalblock"><div class="content"><pre>`yarn generate`</pre></div></div></li><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section><section id="_functions_netlify"><h2>Functions (Netlify)</h2><div class="slide-content"><div class="listingblock"><div class="title">functions/api.js</div><div class="content"><pre class="highlight"><code>const axios = require('axios');
 const url = 'https://taller-codemotion-backend-XXXXX.cloud.okteto.net/api'
 
 exports.handler = async (event) =&gt; {
@@ -575,8 +587,12 @@ exports.handler = async (event) =&gt; {
           body: `Error: ${error}`
         }
     }
-};</code></pre></div></div></div></section><section id="_deploy_3"><h2>deploy 3</h2><div class="slide-content"><div class="ulist"><ul><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section></section>
-<section id="_auth_headers"><h2>Auth headers</h2><div class="slide-content"><div class="ulist"><ul><li><p>validar cabecera en <code>CollatzController</code></p></li><li><p>enviar cabecera en <code>api.json</code></p></li></ul></div></div></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.0/js/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+};</code></pre></div></div></div></section><section id="_deploy_3_2"><h2>deploy 3</h2><div class="slide-content"><div class="ulist"><ul><li><p>deploy</p><div class="literalblock"><div class="content"><pre>'netlify deploy --prod'</pre></div></div></li></ul></div></div></section></section>
+<section id="_auth_headers"><h2>Auth headers</h2><div class="slide-content"><div class="ulist"><ul><li><p>validar cabecera en <code>CollatzController</code></p></li><li><p>enviar cabecera en <code>api.json</code></p></li></ul></div>
+<div class="paragraph"><p>(Si da tiempo)</p></div></div></section>
+<section id="_cosas_mal_hechas"><h2>Cosas mal hechas</h2><div class="slide-content"><div class="ulist"><ul><li><p>no hemos hecho test</p></li><li><p>no usamos variables de entorno</p></li><li><p>user/pwd de la bbdd en el código</p></li><li><p>todo en mismo paquete</p></li><li><p>&#8230;&#8203;</p></li></ul></div></div></section>
+<section id="_bolas_extras"><h2>Bolas extras</h2><div class="slide-content"><div class="ulist"><ul><li><p>depurar directamente en el cluster de Okteto</p></li><li><p>integrar front con servicios de Auth (Google, Auth0, &#8230;&#8203;)</p></li><li><p>automatizar desplieges en ambos entornos</p></li><li><p>ejecución de tareas planificadas, procesos largos, &#8230;&#8203;</p></li></ul></div></div></section>
+<section id="_ejemplo"><h2>Ejemplo:</h2><div class="slide-content"><div class="paragraph"><p>CheckCif, utiliza los servicios de la AEAT para validar un nif</p></div></div></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.0/js/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;

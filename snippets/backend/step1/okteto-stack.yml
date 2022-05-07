@@ -1,0 +1,17 @@
+name: collatz
+
+volumes:
+  data:
+
+services:
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=collatz
+    ports:
+      - 5432
+    volumes:
+      - data:/var/lib/postgresql/data/

@@ -25,6 +25,17 @@ Usar un cluster kubernetes en Okteto de forma fácil
 
 Usar funciones AWS Lambda en Netlify de forma fácil
 
+
+== Requisitos
+
+* Nivel principiante tanto back como front
+* Requisitos:
+** Cuenta de Github
+* Entorno de trabajo:
+** Gitpod
+** VSCode
+** Algo de línea de comando
+
 == Okteto
 
 "Instantly spin up pre-configured environments in the cloud and start developing within seconds"
@@ -52,34 +63,6 @@ la conjetura de Collatz:
 2. si el número es par, se divide por 2
 3. iterar
 4. antes o después llegas a 1
-
-
-== Requisitos
-
-* Nivel principiante tanto back como front
-* Requisitos:
-** Cuenta de Github
-* Entorno de trabajo:
-** Gitpod
-** VSCode
-** Algo de línea de comando
-
-
-[.columns]
-== Tecnología
-
-[.column]
-* Backend
-** **Java**
-** **Micronaut**
-** **Okteto**
-
-[.column]
-* Frontend
-** **Javascript**
-** **NuxtJS (Vue)**
-** **Netlify**
-
 
 == Arquitectura
 
@@ -119,20 +102,40 @@ Rel_L(aws, api, "Axios")
 Rel_U(api, rel_db, "Store")
 ----
 
+[.columns]
+== Tecnología
 
-== Backend
+[.column]
+* Backend
+** **Java**
+** **Micronaut**
+** **Okteto**
+
+[.column]
+* Frontend
+** **Javascript**
+** **NuxtJS (Vue)**
+** **Netlify**
+
+== Check Point
+
+- preguntas ?
+
+== Empezamos
 
 1. Fork 
 
-   https://github.com/pvidasoftware/taller-codemotion-backend
+   https://github.com/pvidasoftware/taller-codemotion
 
 
 2. Gitpod
 
-   https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-backend
+   https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion
 
 
-=== Entorno
+https://gitpod.io ENTRE MEDIAS EL CARACTER # y luego la url de tu repo
+
+== Backend
 
 1. sdkman
    
@@ -156,12 +159,18 @@ Rel_U(api, rel_db, "Store")
 
 - https://cloud.okteto.com
 
+ya tenemos un cluster listo para nosotros
+
+- crear un token (no compartir ni versionar)
+
+=== Okteto cli 
+
 - curl https://get.okteto.com -sSfL | sh
 
 - okteto context use https://cloud.okteto.com --token XXXXXXXXXXx
 
 
-=== Infra
+=== Desplegando Infra
 
 [source]
 ----
@@ -183,7 +192,7 @@ services:
 
 $ okteto deploy
 
-=== Aplicacion
+=== Empezamos la Aplicacion
 
 [source]
 ----
@@ -219,9 +228,10 @@ $ ./gradlew build dockerfile
 
 === okteto-stack.yml
 
+**OJO al tabulado, es en services !!!**
+
 [source]
-----
-  OJO en services !!!
+----  
   collatz:
     image: okteto.dev/collatz
     build:
@@ -240,6 +250,8 @@ $ ./gradlew build dockerfile
 
 === Entrypoint
 
+**OJO NO es en services !!!**
+
 [source]
 ----
 endpoints:
@@ -253,6 +265,12 @@ $ okteto deploy --build
 === Estamos en Internet
 
 abrir navegador 
+
+
+=== Check Point
+
+cómo vamos ?
+
 
 === Entity 
 
@@ -316,16 +334,28 @@ public int calculate(BigInteger n){
 
 [source]
 ----
-
 @Controller("/api")
 public class CollatzController{
 
-@Get("/{bi}")
-Map<String,Object> calculate(BigInteger bi){
+  @Inject CollatzService collatzService;
+
+  @Get("/{bi}")
+  Map<String,Object> calculate(BigInteger bi){
+    System.out.println(bi.toString());
     return Map.of("bi", bi, "counter", collatzService.count(bi));
+  }
 }
 ----
 
+=== Deploy
+
+$ ./gradlew build dockerfile
+
+$ okteto deploy --build
+
+=== Check Point
+
+Probemos la aplicacion con un navegador
 
 === Usar persistencia
 
@@ -350,18 +380,19 @@ CollatzEntity entity = new CollatzEntity();
 collatzRepository.save(entity);
 ----
 
+=== Deploy
+
+$ ./gradlew build dockerfile
+
+$ okteto deploy --build
+
+=== Check Point
+
+cómo vamos ?
 
 == Front
 
-1. Fork 
-
-   https://github.com/pvidasoftware/taller-codemotion-frontend
-
-
-2. Gitpod
-
-   https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-frontend
-
+Cambiamos de tercio
    
 === Netlify
 
@@ -375,7 +406,7 @@ https://netlify.app/
 
 - login
 
-  `netlify login`
+  `netlify login` //Ojo a la ventana emergente
 
 === Entorno
 
@@ -395,7 +426,7 @@ https://netlify.app/
 - javascript
 - yarn
 - bootstrap vue
-- axios
+- **axios**
 - ---
 - **Static** 
 
@@ -423,8 +454,6 @@ $ yarn generate
 
    'netlify deploy --prod'
    
-
-
 === Component
 
 .components/Collatz.vue
@@ -553,5 +582,28 @@ exports.handler = async (event) => {
 - validar cabecera en `CollatzController`
 
 - enviar cabecera en `api.json`
+
+(Si da tiempo)
+
+== Cosas mal hechas
+
+- no hemos hecho test
+- no usamos variables de entorno
+- user/pwd de la bbdd en el código
+- todo en mismo paquete
+- ...
+
+== Bolas extras
+
+- depurar directamente en el cluster de Okteto
+- integrar front con servicios de Auth (Google, Auth0, ...)
+- automatizar desplieges en ambos entornos
+- ejecución de tareas planificadas, procesos largos, ...
+
+== Ejemplo:
+
+CheckCif, utiliza los servicios de la AEAT para validar un nif
+
+
 
 
