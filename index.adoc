@@ -120,7 +120,6 @@ Rel_U(api, rel_db, "Store")
 ----
 
 
-
 == Backend
 
 1. Fork 
@@ -153,6 +152,38 @@ Rel_U(api, rel_db, "Store")
     sdk install micronaut
 
 
+== Okteto
+
+- https://cloud.okteto.com
+
+- curl https://get.okteto.com -sSfL | sh
+
+- okteto context use https://cloud.okteto.com --token XXXXXXXXXXx
+
+
+== Infra
+
+Desplegar una base de datos en Okteto 
+
+.step1/okteto-stack.yml
+[source]
+----
+name: collatz
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=collatz
+    ports:
+      - 5432
+    volumes:
+      - data:/var/lib/postgresql/data/
+----
+
+$ okteto deploy
+
 == Aplicacion
 
 [source]
@@ -167,11 +198,61 @@ $ mn create-app \
    --inplace \
    collatz
 
-$ ./gradlew build
+== Ajustar BBDD
+
+[source]
+----
+datasources:
+  default:
+    url: jdbc:postgresql://db:5432/collatz
+    driverClassName: org.postgresql.Driver
+    username: username
+    password: password
+    schema-generate: CREATE
+    dialect: POSTGRES
+---
+== Build
+
+$ ./gradlew build dockerfile
 ----
 
-== Entity 
+== okteto-stack.yml
 
+[source]
+----
+  OJO en services !!!
+  collatz:
+    image: okteto.dev/collatz
+    build:
+      context: build/docker/main
+    ports:
+      - 8080            
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_NAME=collatz
+      - DATABASE_USERNAME=username
+      - DATABASE_PASSWORD=password
+    depends_on:
+      db:
+        condition: service_healthy
+----
+
+$ okteto deploy --build
+
+== Entrypoint
+
+
+[source]
+----
+endpoints:
+  - path: /
+    service: collatz
+    port: 8080              
+----
+
+$ okteto deploy --build
+
+== Entity 
 
 [source]
 ----
@@ -179,9 +260,9 @@ $ ./gradlew build
 public class CollatzEntity{
     @Id
     @GeneratedValue
-    String id;
+    BigInteger id;
+    int count;
 }
-
 ----
 
 - añadirle otros atributos
@@ -195,12 +276,10 @@ public class CollatzEntity{
 
 @JdbcRepository(dialect = Dialect.POSTGRES)
 public abstract class CollatzRepository 
-    implements CrudRepository<CollatzEntity, String>{
+    implements CrudRepository<CollatzEntity, BigInteger>{
     
 }
 ----
-
-
 
 == Service
 
@@ -231,7 +310,24 @@ public int calculate(BigInteger n){
 }
 ----
 
+== Controller
+
+[source]
+----
+
+@Controller("/api")
+public class CollatzController{
+
+@Get("/{bi}")
+Map<String,Object> calculate(BigInteger bi){
+    return Map.of("bi", bi, "counter", collatzService.count(bi));
+}
+----
+
+
 === Usar persistencia
+
+(destruir el stack para reiniciar bbdd)
 
 .inyectar
 [source]
@@ -243,7 +339,7 @@ public int calculate(BigInteger n){
 [source]
 ----
 Optional<CollatzEntity> optional = 
-    collatzRepository.findById( n.toString() );
+    collatzRepository.findById( n );
 ----
 
 .guardar
@@ -254,101 +350,6 @@ CollatzEntity entity = new CollatzEntity();
 collatzRepository.save(entity);
 ----
 
-
-== Controller
-
-[source]
-----
-
-@Controller("/api")
-public class CollatzController{
-    
-}
-----
-
-=== Get/Post
-
-[source]
-----
-
-@Get("/{bi}")
-Map<String,Object> calculate(BigInteger bi){
-    return Map.of("bi", bi, "counter", collatzService.count(bi));
-}
-----
-
-== Test
-
-No nos da tiempo
-
-== Okteto
-
-- https://cloud.okteto.com
-
-- curl https://get.okteto.com -sSfL | sh
-
-- okteto context use https://cloud.okteto.com --token XXXXXXXXXXx
-
-== okteto-stack.yml
-
-[source]
-----
-services:
-
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=collatz
-    ports:
-      - 5432
-    volumes:
-      - data:/var/lib/postgresql/data/
-----
-
-=== okteto-stack.yml
-
-[source]
-----
-
-  collatz:
-    image: okteto.dev/collatz
-    build:
-      context: build/docker/main
-    ports:
-      - 8080            
-    environment:
-      - DATABASE_HOST=db
-      - DATABASE_NAME=collatz
-      - DATABASE_USERNAME=username
-      - DATABASE_PASSWORD=password
-    depends_on:
-      db:
-        condition: service_healthy
-----
-
-=== okteto-stack.yml
-
-[source]
-----
-
-volumes:
-  data:
-
-endpoints:
-  - path: /
-    service: collatz
-    port: 8080
-----
-
-=== deploy
-
-[source]
-----
-$ ./gradle build dockerfile
-$ okteto deploy --build
-----
 
 
 == Front
