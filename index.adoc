@@ -132,7 +132,7 @@ Rel_U(api, rel_db, "Store")
    https://gitpod.io#https://github.com/XXXXXXX/taller-codemotion-backend
 
 
-== Entorno
+=== Entorno
 
 1. sdkman
    
@@ -152,7 +152,7 @@ Rel_U(api, rel_db, "Store")
     sdk install micronaut
 
 
-== Okteto
+=== Okteto
 
 - https://cloud.okteto.com
 
@@ -161,7 +161,7 @@ Rel_U(api, rel_db, "Store")
 - okteto context use https://cloud.okteto.com --token XXXXXXXXXXx
 
 
-== Infra
+=== Infra
 
 [source]
 ----
@@ -183,7 +183,7 @@ services:
 
 $ okteto deploy
 
-== Aplicacion
+=== Aplicacion
 
 [source]
 ----
@@ -198,7 +198,7 @@ $ mn create-app \
    collatz
 ----
 
-== Ajustar BBDD
+=== Ajustar BBDD
 
 [source]
 ----
@@ -212,12 +212,12 @@ datasources:
     dialect: POSTGRES
 ----
 
-== Build
+=== Build
 
 $ ./gradlew build dockerfile
 
 
-== okteto-stack.yml
+=== okteto-stack.yml
 
 [source]
 ----
@@ -238,9 +238,7 @@ $ ./gradlew build dockerfile
         condition: service_healthy
 ----
 
-$ okteto deploy --build
-
-== Entrypoint
+=== Entrypoint
 
 [source]
 ----
@@ -252,7 +250,11 @@ endpoints:
 
 $ okteto deploy --build
 
-== Entity 
+=== Estamos en Internet
+
+abrir navegador 
+
+=== Entity 
 
 [source]
 ----
@@ -269,7 +271,7 @@ public class CollatzEntity{
 - añadirle los get/set
 
 
-== Repository
+=== Repository
 
 [source]
 ----
@@ -281,7 +283,7 @@ public abstract class CollatzRepository
 }
 ----
 
-== Service
+=== Service
 
 [source]
 ----
@@ -310,7 +312,7 @@ public int calculate(BigInteger n){
 }
 ----
 
-== Controller
+=== Controller
 
 [source]
 ----
@@ -326,8 +328,6 @@ Map<String,Object> calculate(BigInteger bi){
 
 
 === Usar persistencia
-
-(destruir el stack para reiniciar bbdd)
 
 .inyectar
 [source]
@@ -349,7 +349,6 @@ CollatzEntity entity = new CollatzEntity();
 ..
 collatzRepository.save(entity);
 ----
-
 
 
 == Front
@@ -389,7 +388,7 @@ collatzRepository.save(entity);
 $ yarn generate
 ----
 
-== Component
+=== Component
 
 .components/Collatz.vue
 [source]
@@ -456,7 +455,7 @@ export default {
 </script>
 ----
 
-== Functions (Netlify)
+=== Functions (Netlify)
 
 .functions/api.js
 [source]
@@ -487,7 +486,7 @@ exports.handler = async (event) => {
 ----
 
    
-== Netlify
+=== Netlify
 
 - create account, login github
 
